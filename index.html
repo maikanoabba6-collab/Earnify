@@ -179,7 +179,6 @@
     <div class="flex flex-col items-center text-gray-400"><i class="fas fa-wallet"></i><span class="text-[10px] font-bold mt-1">Wallet</span></div>
     <div class="flex flex-col items-center text-gray-400"><i class="fas fa-cog"></i><span class="text-[10px] font-bold mt-1">Settings</span></div>
 </footer>
-
 <script>
     const authModal = document.getElementById('authModal');
     const usernameDisplay = document.getElementById('usernameDisplay');
@@ -188,6 +187,8 @@
     
     let isBalanceVisible = true;
     const realBalance = "₦2,450.00";
+
+    const smartlinkURL = "https://www.effectivegatecpm.com/w7waybs6?key=7368408133166eaf72815158b03c37e4"; // Your Smartlink
 
     const formTemplates = {
         login: `
@@ -245,8 +246,21 @@
         toggleBalance.classList.toggle('fa-eye-slash');
     });
 
-    // Initialize
-    window.onload = () => renderForm('login');
+    // **Add Smartlink click handlers for Survey & Task**
+    function openSmartlink() {
+        window.open(smartlinkURL, "_blank"); // Opens in a new tab
+    }
+
+    // Example: assuming you have buttons with IDs "surveyBtn" and "taskBtn"
+    window.onload = () => {
+        renderForm('login');
+
+        const surveyBtn = document.getElementById('surveyBtn');
+        const taskBtn = document.getElementById('taskBtn');
+
+        if(surveyBtn) surveyBtn.addEventListener('click', openSmartlink);
+        if(taskBtn) taskBtn.addEventListener('click', openSmartlink);
+    };
 </script>
 </body>
 </html>
