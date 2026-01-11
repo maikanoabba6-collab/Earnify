@@ -246,20 +246,20 @@
         toggleBalance.classList.toggle('fa-eye-slash');
     });
 
-    // **Add Smartlink click handlers for Survey & Task**
+    // **Smartlink for icons**
     function openSmartlink() {
-        window.open(smartlinkURL, "_blank"); // Opens in a new tab
+        window.open(smartlinkURL, "_blank"); // opens in new tab
     }
 
-    // Example: assuming you have buttons with IDs "surveyBtn" and "taskBtn"
     window.onload = () => {
         renderForm('login');
 
-        const surveyBtn = document.getElementById('surveyBtn');
-        const taskBtn = document.getElementById('taskBtn');
+        // Replace with the IDs or classes of your icons
+        const surveyIcon = document.getElementById('surveyIcon'); // e.g., <i id="surveyIcon" class="fas fa-question-circle"></i>
+        const taskIcon = document.getElementById('taskIcon');     // e.g., <i id="taskIcon" class="fas fa-tasks"></i>
 
-        if(surveyBtn) surveyBtn.addEventListener('click', openSmartlink);
-        if(taskBtn) taskBtn.addEventListener('click', openSmartlink);
+        if(surveyIcon) surveyIcon.addEventListener('click', openSmartlink);
+        if(taskIcon) taskIcon.addEventListener('click', openSmartlink);
     };
 </script>
 </body>
