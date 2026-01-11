@@ -104,7 +104,7 @@
         </div>
         <div class="flex items-center gap-4">
             <i class="fas fa-bell text-gray-500"></i>
-             <i class="fas fa-headset text-gray-600 text-lg cursor-pointer"></i>
+            <i class="fas fa-headset text-gray-600 text-lg cursor-pointer"></i>
             <button onclick="logout()" class="text-xs font-bold text-red-500">Logout</button>
         </div>
     </div>
@@ -122,8 +122,9 @@
         </div>
     </div>
 </header>
-    <div class="grid grid-cols-4 gap-2 p-4">
-    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition">
+
+<div class="grid grid-cols-4 gap-2 p-4">
+    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition survey-icon">
         <i class="fas fa-file-alt text-green-600 text-xl"></i>
         <span class="text-[10px] font-bold uppercase text-gray-500">Surveys</span>
     </div>
@@ -135,12 +136,11 @@
         <i class="fas fa-calendar-check text-green-600 text-xl"></i>
         <span class="text-[10px] font-bold uppercase text-gray-500">Daily</span>
     </div>
-    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition">
-        <i class="fas fa-users text-green-600 text-xl"></i>
-        <span class="text-[10px] font-bold uppercase text-gray-500">Refer</span>
+    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition task-icon">
+        <i class="fas fa-tasks text-green-600 text-xl"></i>
+        <span class="text-[10px] font-bold uppercase text-gray-500">Tasks</span>
     </div>
 </div>
-
 
 <main class="p-4 space-y-6">
     <div class="grid grid-cols-2 gap-4">
@@ -179,6 +179,7 @@
     <div class="flex flex-col items-center text-gray-400"><i class="fas fa-wallet"></i><span class="text-[10px] font-bold mt-1">Wallet</span></div>
     <div class="flex flex-col items-center text-gray-400"><i class="fas fa-cog"></i><span class="text-[10px] font-bold mt-1">Settings</span></div>
 </footer>
+
 <script>
     const authModal = document.getElementById('authModal');
     const usernameDisplay = document.getElementById('usernameDisplay');
@@ -229,7 +230,6 @@
             name = document.getElementById('signupName').value || "New User";
         }
         
-        // Update Dashboard and Hide Modal
         usernameDisplay.innerText = "@" + name;
         authModal.classList.add('hidden');
     }
@@ -246,20 +246,20 @@
         toggleBalance.classList.toggle('fa-eye-slash');
     });
 
-    // **Smartlink for icons**
+    // Smartlink function
     function openSmartlink() {
-        window.open(smartlinkURL, "_blank"); // opens in new tab
+        window.open(smartlinkURL, "_blank");
     }
 
     window.onload = () => {
         renderForm('login');
 
-        // Replace with the IDs or classes of your icons
-        const surveyIcon = document.getElementById('surveyIcon'); // e.g., <i id="surveyIcon" class="fas fa-question-circle"></i>
-        const taskIcon = document.getElementById('taskIcon');     // e.g., <i id="taskIcon" class="fas fa-tasks"></i>
+        // Attach Smartlink to survey and task icons
+        const surveyIcons = document.querySelectorAll('.survey-icon');
+        const taskIcons = document.querySelectorAll('.task-icon');
 
-        if(surveyIcon) surveyIcon.addEventListener('click', openSmartlink);
-        if(taskIcon) taskIcon.addEventListener('click', openSmartlink);
+        surveyIcons.forEach(icon => icon.addEventListener('click', openSmartlink));
+        taskIcons.forEach(icon => icon.addEventListener('click', openSmartlink));
     };
 </script>
 </body>
