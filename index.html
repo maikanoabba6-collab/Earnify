@@ -1,266 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earnify — Modern Earning Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.3s ease;
-        }
-        .modal-overlay.hidden { display: none; pointer-events: none; opacity: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TETFund Scholarship Application</title>
+  <style>
+    html { scroll-behavior: smooth; }
 
-        .auth-card {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            padding: 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
 
-        .tab-btn { position: relative; transition: all 0.3s ease; }
-        .tab-btn.active { color: #16a34a; }
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #16a34a;
-        }
+    /* Logo */
+    .logo {
+      display: block;
+      margin: 0 auto 20px auto;
+      max-width: 200px;
+    }
 
-        .input-group { position: relative; margin-bottom: 1rem; }
-        .input-group i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-        }
+    h1 {
+      text-align: center;
+      color: #004aad;
+      margin-bottom: 10px;
+    }
 
-        .input-field {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.75rem;
-            outline: none;
-        }
+    .info-box {
+      background-color: #fff;
+      padding: 25px;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      line-height: 1.6;
+      font-size: 16px;
+      color: #333;
+    }
 
-        .input-field:focus { border-color: #16a34a; }
-        
-        .fade-in { animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    .info-box p { margin-bottom: 15px; }
+
+    .agreement {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .agreement input { margin-right: 10px; }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      background-color: #004aad;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+
+    button:hover:enabled { background-color: #00337a; }
+
+    form {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+
+    .bank-details {
+      background-color: #e6f0ff;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    /* Preview Styles */
+    img.preview, iframe.preview {
+      display: block;
+      margin-top: 10px;
+      max-width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
+<body>
 
-<body class="bg-gray-100 font-sans pb-24">
+  <!-- Scholarship Info Section -->
+  <div id="scholarshipInfo">
+    <svg class="tetfund-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 123 34" width="123" height="34">
+      <image href="https://cdn.brandfetch.io/idkvHE9PRC/w/123/h/34/theme/dark/logo.png" width="123" height="34" />
+    </svg>
 
-<div id="authModal" class="modal-overlay">
-    <div class="auth-card">
-        <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-xl mb-2">
-                <i class="fas fa-gem text-green-600 text-xl"></i>
-            </div>
-            <h1 class="text-xl font-bold text-slate-800">earnify</h1>
-        </div>
-
-        <div class="flex border-b border-slate-100 mb-6">
-            <button id="loginTab" onclick="renderForm('login')" class="tab-btn active flex-1 pb-3 font-semibold text-slate-400">Login</button>
-            <button id="signupTab" onclick="renderForm('signup')" class="tab-btn flex-1 pb-3 font-semibold text-slate-400">Signup</button>
-        </div>
-
-        <div id="formTarget"></div>
-        <p id="toggleText" class="text-center text-xs text-slate-500 mt-6"></p>
+    <h1>Scholarship Notice</h1>
+    <div class="info-box">
+      <p><strong>Important Notice:</strong> You are about to apply for a scholarship offered by Tertiary Education Trust Fund (TETFund). The scholarship amount is <strong>₦50,000</strong> and is intended to support your academic endeavors.</p>
+      <p>By proceeding with this application, you acknowledge and agree to the following:</p>
+      <ul>
+        <li>The scholarship is subject to eligibility verification and approval by TETFund.</li>
+        <li>The scholarship amount will be disbursed only to approved applicants.</li>
+        <li>Providing false information may result in disqualification.</li>
+        <li>Acceptance of this scholarship signifies your consent to TETFund terms and conditions.</li>
+      </ul>
+      <div class="agreement">
+        <input type="checkbox" id="agreeCheckbox">
+        <label for="agreeCheckbox">I have read and agree to the terms of this scholarship.</label>
+      </div>
     </div>
-</div>
+    <button id="applyBtn" disabled>Apply Now</button>
+  </div>
 
-<header class="bg-white shadow-sm sticky top-0 z-40 p-4">
-    <div class="flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <i class="fas fa-user text-green-600"></i>
-            </div>
-            <div>
-                <span id="usernameDisplay" class="font-bold text-gray-800 block leading-tight">@Guest</span>
-                <span class="text-[10px] text-green-600 font-bold uppercase">Pro Member</span>
-            </div>
-        </div>
-        <div class="flex items-center gap-4">
-            <i class="fas fa-bell text-gray-500"></i>
-            <i class="fas fa-headset text-gray-600 text-lg cursor-pointer"></i>
-            <button onclick="logout()" class="text-xs font-bold text-red-500">Logout</button>
-        </div>
-    </div>
-    <div class="mt-4 bg-gradient-to-r from-green-600 to-green-500 p-4 rounded-2xl text-white shadow-lg shadow-green-100">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-xs text-green-100 font-medium">Available Balance</p>
-                <h2 id="balanceDisplay" class="text-2xl font-bold mt-1">₦2,450.00</h2>
-            </div>
-            <i id="toggleBalance" class="fas fa-eye-slash text-green-100 cursor-pointer p-1"></i>
-        </div>
-        <div class="flex gap-2 mt-4">
-            <button class="flex-1 bg-white text-green-600 py-2 rounded-xl text-xs font-bold">Withdraw</button>
-            <button class="flex-1 bg-green-700 text-white py-2 rounded-xl text-xs font-bold">History</button>
-        </div>
-    </div>
-</header>
+  <!-- Scholarship Form -->
+  <form id="scholarshipForm" enctype="multipart/form-data">
+    <svg class="tetfund-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 123 34" width="123" height="34">
+      <image href="https://cdn.brandfetch.io/idkvHE9PRC/w/123/h/34/theme/dark/logo.png" width="123" height="34" />
+    </svg>
 
-<div class="grid grid-cols-4 gap-2 p-4">
-    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition survey-icon">
-        <i class="fas fa-file-alt text-green-600 text-xl"></i>
-        <span class="text-[10px] font-bold uppercase text-gray-500">Surveys</span>
-    </div>
-    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition">
-        <i class="fas fa-video text-green-600 text-xl"></i>
-        <span class="text-[10px] font-bold uppercase text-gray-500">Videos</span>
-    </div>
-    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition">
-        <i class="fas fa-calendar-check text-green-600 text-xl"></i>
-        <span class="text-[10px] font-bold uppercase text-gray-500">Daily</span>
-    </div>
-    <div class="flex flex-col items-center gap-1 p-3 bg-white rounded-2xl shadow-sm cursor-pointer hover:bg-green-50 transition task-icon">
-        <i class="fas fa-tasks text-green-600 text-xl"></i>
-        <span class="text-[10px] font-bold uppercase text-gray-500">Tasks</span>
-    </div>
-</div>
+    <h1>Scholarship Application</h1>
 
-<main class="p-4 space-y-6">
-    <div class="grid grid-cols-2 gap-4">
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
-            <p class="text-gray-400 text-[10px] font-bold uppercase">Tasks Done</p>
-            <p class="text-lg font-bold text-gray-800">124</p>
-        </div>
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
-            <p class="text-gray-400 text-[10px] font-bold uppercase">Referrals</p>
-            <p class="text-lg font-bold text-gray-800">12</p>
-        </div>
-    </div>
+    <label for="passport">Upload Passport (Passport Photo)</label>
+    <input type="file" id="passport" name="passport" accept=".jpg, .jpeg, .png" required>
+    <img id="passportPreview" class="preview" style="display:none;" alt="Passport Preview">
 
-    <div>
-        <h2 class="font-bold text-gray-800 mb-3">Today's Tasks</h2>
-        <div class="space-y-3">
-            <div class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-play"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-sm text-gray-800">Watch Video Ad</p>
-                        <p class="text-[10px] text-gray-400">+₦20.00</p>
-                    </div>
-                </div>
-                <button class="bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold text-gray-600">Start</button>
-            </div>
-        </div>
-    </div>
-</main>
+    <label for="fullname">Full Name</label>
+    <input type="text" id="fullname" name="fullname" required>
 
-<footer class="fixed bottom-0 inset-x-0 bg-white border-t p-3 flex justify-around items-center z-40">
-    <div class="flex flex-col items-center text-green-600"><i class="fas fa-home"></i><span class="text-[10px] font-bold mt-1">Home</span></div>
-    <div class="flex flex-col items-center text-gray-400"><i class="fas fa-tasks"></i><span class="text-[10px] font-bold mt-1">Tasks</span></div>
-    <div class="flex flex-col items-center text-gray-400"><i class="fas fa-wallet"></i><span class="text-[10px] font-bold mt-1">Wallet</span></div>
-    <div class="flex flex-col items-center text-gray-400"><i class="fas fa-cog"></i><span class="text-[10px] font-bold mt-1">Settings</span></div>
-</footer>
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required>
 
-<script>
-    const authModal = document.getElementById('authModal');
-    const usernameDisplay = document.getElementById('usernameDisplay');
-    const balanceDisplay = document.getElementById('balanceDisplay');
-    const toggleBalance = document.getElementById('toggleBalance');
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" required pattern="(\+234|0)[0-9]{10}" placeholder="e.g. 09012345678 or +2349012345678">
+
+    <label for="dob">Date of Birth</label>
+    <input type="date" id="dob" name="dob" required>
+
+    <label for="gender">Gender</label>
+    <select id="gender" name="gender" required>
+      <option value="">--Select Gender--</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
     
-    let isBalanceVisible = true;
-    const realBalance = "₦2,450.00";
-
-    const smartlinkURL = "https://playabledownload.com/1851627"; // Your Smartlink
-
-    const formTemplates = {
-        login: `
-            <div class="fade-in">
-                <div class="input-group"><i class="fas fa-envelope"></i><input type="email" id="loginEmail" placeholder="Email" class="input-field"></div>
-                <div class="input-group"><i class="fas fa-lock"></i><input type="password" placeholder="Password" class="input-field"></div>
-                <button onclick="handleAuth('login')" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mt-2 shadow-lg shadow-green-100">Sign In</button>
-            </div>
-        `,
-        signup: `
-            <div class="fade-in">
-                <div class="input-group"><i class="fas fa-user"></i><input type="text" id="signupName" placeholder="Username" class="input-field"></div>
-                <div class="input-group"><i class="fas fa-envelope"></i><input type="email" placeholder="Email" class="input-field"></div>
-                <div class="input-group"><i class="fas fa-lock"></i><input type="password" placeholder="Password" class="input-field"></div>
-                <button onclick="handleAuth('signup')" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold mt-2 shadow-lg shadow-green-100">Create Account</button>
-            </div>
-        `
-    };
-
-    function renderForm(type) {
-        const container = document.getElementById('formTarget');
-        const toggleText = document.getElementById('toggleText');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(type + 'Tab').classList.add('active');
-
-        container.innerHTML = formTemplates[type];
-        toggleText.innerHTML = type === 'login' 
-            ? `New here? <a href="#" onclick="renderForm('signup')" class="text-green-600 font-bold">Sign up</a>`
-            : `Joined already? <a href="#" onclick="renderForm('login')" class="text-green-600 font-bold">Login</a>`;
-    }
-
-    function handleAuth(type) {
-        let name = "User";
-        if(type === 'login') {
-            const email = document.getElementById('loginEmail').value;
-            name = email ? email.split('@')[0] : "Welcome back!";
-        } else {
-            name = document.getElementById('signupName').value || "New User";
-        }
+    <label for="state">State</label>
+    <Select id="state" name="state">
+      <option value="state">-select-</option>
+      <option value="abia">Abia</option>
+      <option value="adamawa">Adamawa</option>
+      <option value="akwa ibom">Akwa Ibom</option>
+      <option value="bauchi">Bauchi</option>
+      <option value="bayelsa">Bayelsa</option>
+      <option value="benue">Benue</option>
+      <option value="borno">Borno</option>
+      <option value="cross river">Cross River</option>
+      <option value="delta">Delta</option>
+      <option value="ebonyi">Ebonyi</option>
+      
         
-        usernameDisplay.innerText = "@" + name;
-        authModal.classList.add('hidden');
-    }
+    </Select>
 
-    function logout() {
-        authModal.classList.remove('hidden');
-        usernameDisplay.innerText = "@Guest";
-    }
+    <label for="institution">Institution/University</label>
+    <input list="institutions" id="institution" name="institution" placeholder="Search and select institution" required>
+    <datalist id="institutions">
+      <!-- Sample institutions omitted for brevity, include your full list here -->
+    </datalist>
 
-    toggleBalance.addEventListener('click', () => {
-        isBalanceVisible = !isBalanceVisible;
-        balanceDisplay.innerText = isBalanceVisible ? realBalance : "₦ • • • •";
-        toggleBalance.classList.toggle('fa-eye');
-        toggleBalance.classList.toggle('fa-eye-slash');
+    <label for="course">Course of Study</label>
+    <input type="text" id="course" name="course" required>
+
+    <label for="matric">Matriculation Number</label>
+    <input type="text" id="matric" name="matric" required placeholder="e.g. 2023/ABC/123">
+
+    <label for="admissionLetter">Upload Admission Letter (PDF/JPG/PNG)</label>
+    <input type="file" id="admissionLetter" name="admissionLetter" accept=".pdf, .jpg, .jpeg, .png" required>
+    <div id="admissionPreview"></div>
+
+    <label for="year">Current Year of Study</label>
+    <select id="year" name="year" required>
+      <option value="">--Select Year--</option>
+      <option value="1">1st Year</option>
+      <option value="2">2nd Year</option>
+      <option value="3">3rd Year</option>
+      <option value="4">4th Year</option>
+      <option value="5">5th Year</option>
+    </select>
+
+    <div class="bank-details">
+      <h3>Bank Account Details</h3>
+      <label for="bankName">Bank Name</label>
+      <Select id="bank name" name="bank name">
+        <option value="select">- select-</option>
+        <option value="access bank">Access bank</option>
+      </Select>
+
+      <label for="accountNumber">Account Number</label>
+      <input type="text" id="accountNumber" name="accountNumber" required placeholder="e.g. 1234567890" pattern="\d{10,12}">
+
+      <label for="bvn">BVN (Bank Verification Number)</label>
+      <input type="text" id="bvn" name="bvn" required placeholder="11-digit BVN" pattern="\d{11}">
+    </div>
+
+    <button type="submit">Submit Application</button>
+  </form>
+  
+  <script>
+    const agreeCheckbox = document.getElementById('agreeCheckbox');
+    const applyBtn = document.getElementById('applyBtn');
+    const scholarshipInfo = document.getElementById('scholarshipInfo');
+    const form = document.getElementById('scholarshipForm');
+
+    agreeCheckbox.addEventListener('change', () => {
+      applyBtn.disabled = !agreeCheckbox.checked;
     });
 
-    // Smartlink function
-    function openSmartlink() {
-        window.open(smartlinkURL, "_blank");
-    }
+    applyBtn.addEventListener('click', () => {
+      scholarshipInfo.style.display = 'none';
+      form.style.display = 'block';
+      document.getElementById('fullname').focus();
+      window.scrollTo(0, 0);
+    });
 
-    window.onload = () => {
-        renderForm('login');
+    const passportInput = document.getElementById('passport');
+    const passportPreview = document.getElementById('passportPreview');
 
-        // Attach Smartlink to survey and task icons
-        const surveyIcons = document.querySelectorAll('.survey-icon');
-        const taskIcons = document.querySelectorAll('.task-icon');
+    passportInput.addEventListener('change', () => {
+      const file = passportInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          passportPreview.src = e.target.result;
+          passportPreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
 
-        surveyIcons.forEach(icon => icon.addEventListener('click', openSmartlink));
-        taskIcons.forEach(icon => icon.addEventListener('click', openSmartlink));
-    };
-</script>
+    const admissionInput = document.getElementById('admissionLetter');
+    const admissionPreview = document.getElementById('admissionPreview');
+
+    admissionInput.addEventListener('change', () => {
+      admissionPreview.innerHTML = '';
+      const file = admissionInput.files[0];
+      if (file) {
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          img.className = 'preview';
+          img.alt = 'Admission Letter Preview';
+          admissionPreview.appendChild(img);
+        } else if (file.type === 'application/pdf') {
+          const iframe = document.createElement('iframe');
+          iframe.src = URL.createObjectURL(file);
+          iframe.className = 'preview';
+          iframe.height = "200";
+          admissionPreview.appendChild(iframe);
+        } else {
+          const otherText = document.createElement('p');
+          otherText.textContent = `Uploaded File: ${file.name}`;
+          admissionPreview.appendChild(otherText);
+        }
+      }
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      alert("Application submitted successfully!");
+      form.reset();
+      passportPreview.style.display = 'none';
+      admissionPreview.innerHTML = '';
+    });
+  </script>
+
 </body>
-</html>
+          </html>
